@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Booking } from 'src/app/modules/booking';
 import { Flight } from 'src/app/modules/flight';
 import { FlightService } from 'src/app/services/flight.service';
 
@@ -8,14 +10,13 @@ import { FlightService } from 'src/app/services/flight.service';
   styleUrls: ['./flight.component.css']
 })
 export class FlightComponent implements OnInit {
-  selectedDeparture!: string;
-  selectedArrival!: string;
   selectedDate!: string;
   flightLists: Array<Flight> = [];
-  isChecked: boolean = false;
-  flight!: Flight;
+  isShow: boolean = false;
+  selectedFlight!: Flight;
+  saveBooking!: Booking
 
-  constructor(private flightService: FlightService) { }
+  constructor(private flightService: FlightService, private router: Router) { }
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
@@ -28,16 +29,21 @@ export class FlightComponent implements OnInit {
     })
   }
 
-  updatePrice(){
-    // this.flight = this.flightLists.find(flight =>
-    //   flight.airport_departiture === this.selectedDeparture && flight.airport_destination === this.selectedArrival)
+  onBooking(id_flight: string){
+    this.flightService.saveBooking(id_flight).subscribe({
+      next: (data: Booking) => {
+        this.saveBooking = data;
+        alert(`Votre réservation a été pris en compte avec succès`);
+        console.log(this.saveBooking);
+      },
+      error: (err: any) => console.log(err)
+    })
   }
 
-  onBooking(flight: Flight){
-    console.log(flight);
-
+  selectFlight(flight: Flight){
+    this.isShow = !this.isShow;
+    if(this.isShow){
+        this.selectedFlight = flight
+    }
   }
-
-
-
 }
