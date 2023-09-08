@@ -15,23 +15,34 @@
               </div>
             </div>
             <div class="row" *ngIf="selectedFlight">
-              <div class="row col-md-6" *ngIf="selectedFlight">
+              <p class="text-xl">Vous allez de <strong>{{selectedFlight.airport_departiture}}</strong> à <strong>{{ selectedFlight.airport_destination}}</strong></p>
+              <!-- <div class="row">
+                <p class="col-3">Prix du vol {{selectedFlight.price}}</p>
+                <select name="currency" id="currency" class="col-6">
+                  <option (value)="selectedFlight.price" selected>EUR</option>
+                </select>
+              </div> -->
+              <h1 *ngIf="totalPrice">{{totalPrice}} EURO</h1>
+              <div class="row col-md-6">
                 <div class="form-group">
-                  <label for="date">Date de départ :</label>
-                  <input type="date" class="form-control" id="date" [(ngModel)]="selectedDate" name="selectedDate">
+                  <label for="dateDeparture">Renseigner votre date de départ:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="dateDeparture"
+                  [(ngModel)]="dateFlight"
+                  name="dateDeparture"
+                  [min]="minDate"
+                >
                 </div>
                 <div class="form-group">
-                  <label for="price">Prix :</label>
-                  <input type="text" id="price" class="form-control" [(ngModel)]="selectedFlight.price" readonly name="price">
-                </div>
-                <div class="form-group">
-                  <label for="price" hidden>id :</label>
-                  <input type="text" id="price" class="form-control" [(ngModel)]="selectedFlight.id" readonly name="id" hidden>
+                  <label for="luggage">Nbre de baggages :</label>
+                  <input required type="number" id="luggage" class="form-control" (ngModelChange)="onLuggagesChanged()" name="luggage" min="0" [(ngModel)]="luggages">
                 </div>
               </div>
             </div>
             <br/>
-            <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id)">Réserver</button>
+            <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id, dateFlight)">Réserver</button>
             </div>
       </div>
   </div>

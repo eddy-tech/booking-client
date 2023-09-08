@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Booking } from 'src/app/modules/booking';
 import { Flight } from 'src/app/modules/flight';
 import { FlightService } from 'src/app/services/flight.service';
@@ -14,9 +13,14 @@ export class FlightComponent implements OnInit {
   flightLists: Array<Flight> = [];
   isShow: boolean = false;
   selectedFlight!: Flight;
-  saveBooking!: Booking
+  luggages: number = 0;
+  saveBooking!: Booking;
+  minDate!: string
+  selectedBooking!: Booking
+  dateFlight!: string
+  totalPrice!: number
 
-  constructor(private flightService: FlightService, private router: Router) { }
+  constructor(private flightService: FlightService) {}
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
@@ -27,10 +31,19 @@ export class FlightComponent implements OnInit {
         console.log(err);
       }
     })
+    this.getDateMin();
   }
 
-  onBooking(id_flight: string){
-    this.flightService.saveBooking(id_flight).subscribe({
+  onBooking(id_flight: string, date_departiture: string | null){
+    console.log(date_departiture);
+    if(!date_departiture) return;
+    if(this.luggages < 0) return;
+    const [year, month, day] = date_departiture?.split('-')
+    const timestamp = new Date(+year, +month, +day).getTime()
+    console.log(timestamp);
+
+
+    this.flightService.saveBooking(id_flight, timestamp).subscribe({
       next: (data: Booking) => {
         this.saveBooking = data;
         alert(`Votre réservation a été pris en compte avec succès`);
@@ -45,5 +58,18 @@ export class FlightComponent implements OnInit {
     if(this.isShow){
         this.selectedFlight = flight
     }
+  }
+
+  onLuggagesChanged(){
+    if(+this.luggages > this.selectedFlight.luggages) this.totalPrice = this.selectedFlight.price * (+this.luggages - this.selectedFlight.luggages)
+    else this.totalPrice = this.selectedFlight.price
+  }
+
+  getDateMin(){
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    this.minDate = `${year}-${month}-${day}`;
   }
 }
