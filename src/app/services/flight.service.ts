@@ -1,8 +1,8 @@
+import { Flight } from './../modules/flight';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Flight } from '../modules/flight';
 import { Booking } from '../modules/booking';
 
 @Injectable({
@@ -18,6 +18,14 @@ export class FlightService {
   }
 
   saveBooking(flight: Flight): Observable<Booking> {
+    if (flight.places === 0) {
+      alert('plus de places dispo');
+    }
     return this.httpClient.post<Booking>(`${this.url}/booking`, flight);
   }
+  getAvailableSeats(flightId: string): Observable<number> {
+    const url = `${this.url}/flight/${flightId}/getRestPlace`;
+    return this.httpClient.get<number>(url);
+  }
+
 }

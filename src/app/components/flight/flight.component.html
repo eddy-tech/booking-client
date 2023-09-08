@@ -35,10 +35,14 @@
           </div>
           <br/>
           <button type="submit" class="btn btn-primary">Réserver</button>
+          <!-- <button (onclick)="saveBooking(flight)" [disabled]="selectedFlight.places === 0">Réserver</button>  -->
+          <p *ngIf="selectedFlight.places === 0">Désolé, il n'y a plus de places disponibles.</p>
+
       </form>
   </div>
   </div>
 
 </div>
+
 
 
