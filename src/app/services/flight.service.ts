@@ -17,7 +17,11 @@ export class FlightService {
     return this.httpClient.get<Array<Flight>>(`${this.url}/flight`);
   }
 
-  saveBooking(flight: Flight): Observable<Booking> {
-    return this.httpClient.post<Booking>(`${this.url}/booking`, flight);
+  saveBooking(flight_id: string): Observable<Booking> {
+    return this.httpClient.post<Booking>(`${this.url}/booking`, {flight_id});
+  }
+
+  getNumberPlace(flight_id: string): Observable<any>{
+    return this.httpClient.get(`${this.url}/flight/${flight_id}/getRestPlace`);
   }
 }
