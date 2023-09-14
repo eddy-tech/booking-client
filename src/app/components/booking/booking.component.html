@@ -1,22 +1,25 @@
-<h1>Booking Confirmation</h1>
+<div class="container mt-4">
+  <h1 class="display-4">Confirmation de Réservation</h1>
 
-<!-- Affichez ici les détails de la réservation -->
-<div>
+  <div class="card" *ngIf="confirmBooking">
+    <div class="card-body">
+      <h5 class="card-title">Récapitulatif de la Réservation :</h5>
 
-  <p>Récapitulatif de la réservation :</p>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Numéro de Réservation :</strong> {{ confirmBooking.id }}</li>
+        <li class="list-group-item"><strong>Numéro de Vol :</strong> {{ confirmBooking.flight_id }}</li>
+        <li class="list-group-item"><strong>Date de Départ :</strong> {{ confirmBooking.date_departiture | date: 'dd/MM/yyyy' }}</li>
+        <li class="list-group-item"><strong>Nombre de Billets :</strong> {{ confirmBooking.quantity }}</li>
+        <li class="list-group-item"><strong>Devise :</strong> {{ confirmBooking.currency }}</li>
+        <li class="list-group-item"><strong>Nombre de Bagages :</strong> {{ confirmBooking.luggages }}</li>
+        <li class="list-group-item"><strong>Réduction :</strong> {{ confirmBooking.discount }}</li>
+        <li class="list-group-item"><strong>Réduction Conditionnée :</strong> {{ confirmBooking.discount_cond }}</li>
+        <li class="list-group-item"><strong>Coût des Bagages Supplémentaires :</strong> {{ confirmBooking.cost_per_more_luggages }}</li>
+      </ul>
 
-  <!-- Affichez ici les détails de la réservation -->
-
-  <!-- <p>Numéro de réservation : {{ flight.id }}</p>
-
-  <p>Numéro de vol : {{ flight.airport_departiture }}</p>
-
-  <p>Nom du passager : {{ flight.airport_destination }}</p> -->
-
-  <!-- Lien pour télécharger le récapitulatif -->
-
-  <!-- <a href="{{ recapLink }}">Télécharger le récapitulatif</a> -->
-
+      <!-- Lien pour télécharger le récapitulatif -->
+      <a class="btn btn-primary mt-3">Télécharger le Récapitulatif</a>
+      <a class="btn btn-primary mt-3 mr-5" routerLink="/">Retour</a>
+    </div>
+  </div>
 </div>
-
-

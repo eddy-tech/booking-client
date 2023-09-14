@@ -3,3 +3,8 @@
   cursor: pointer;
   padding: 5;
 }
+
+.selected-flight{
+  background-color: green;
+  color: white !important;
+}

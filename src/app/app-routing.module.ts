@@ -9,7 +9,7 @@ const routes: Routes = [
     component: FlightComponent
   },
   {
-    path: 'booking',
+    path: 'booking/:orderId',
     component: BookingComponent
   }
 ];

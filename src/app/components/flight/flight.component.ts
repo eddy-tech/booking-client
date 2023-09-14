@@ -1,4 +1,7 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {BookingResponse} from 'src/app/modules/BookingResponse';
 import { Airport } from 'src/app/modules/airport';
 import { Booking } from 'src/app/modules/booking';
 import { Currency } from 'src/app/modules/currency';
@@ -19,7 +22,7 @@ export class FlightComponent implements OnInit {
   luggages: number = 0;
   numberPlaces: number = 0;
   totalPlaces: number = 0;
-  saveBooking!: Booking<Airport>;
+  saveBooking!: BookingResponse;
   minDate!: string
   selectedBooking!: Booking<Airport>
   dateFlight!: string
@@ -28,13 +31,11 @@ export class FlightComponent implements OnInit {
   currencies: Array<Currency> = []
   selectedCurrency!: string
 
-  constructor(private flightService: FlightService, private bookingService: BookingService) {}
+  constructor(private flightService: FlightService, private bookingService: BookingService, private route: Router) {}
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
       next: (data: Array<Flight<Airport>>) => {
-        console.log(data);
-
         this.flightLists = data;
       },
       error: (err: Error) => {
@@ -48,7 +49,6 @@ export class FlightComponent implements OnInit {
   onNumberPlace(flight_id: string){
     this.flightService.getNumberPlace(flight_id).subscribe({
       next: (data: number) => {
-        console.log("number : ", data);
         this.totalPlaces = data;
       }
     })
@@ -58,44 +58,70 @@ export class FlightComponent implements OnInit {
     this.flightService.getCurrencies().subscribe({
       next: (data: Array<Currency>) => {
         this.currencies = data;
-        console.log("Currencies: ", this.currencies);
       }
     })
   }
 
   onBooking(id_flight: string, date_departiture: string | null, quantity: number, currency: string, luggages: number){
-    console.log(date_departiture);
     if(!date_departiture) return;
     if(this.luggages < 0) return;
-    const [year, month, day] = date_departiture?.split('-')
-    const timestamp = new Date(+year, +month, +day).getTime()
-    // this.onNumberPlace(id_flight);
-
+    const [year, month, day] = date_departiture?.split('-');
+    const timestamp = new Date(+year, +month, +day).getTime();
     this.bookingService.saveBooking(id_flight, timestamp, quantity, currency, luggages).subscribe({
-      next: (data: Booking<Airport>) => {
+      next: (data: BookingResponse) => {
         this.saveBooking = data;
         alert(`Votre réservation a été pris en compte avec succès`);
-        console.log(this.saveBooking);
+        this.route.navigate(['/booking', this.saveBooking.order_id]);
       },
-      error: (err: any) => console.log(err)
+      error: (err: HttpErrorResponse) =>{
+        alert(err.error.message);
+      }
     })
   }
 
   selectFlight(flight: Flight<Airport>){
     this.isShow = !this.isShow;
     if(this.isShow){
-        this.selectedFlight = flight
+        this.selectedFlight = flight;
+        this.totalPrice = parseFloat(flight.price.toFixed(2));
+        this.numberPlaces = 0;
+        this.luggages = 0;
     }
   }
 
-  onLuggagesChanged(){
-    if(+this.luggages > this.selectedFlight.luggages_limit) this.totalPrice = this.selectedFlight.price + (+this.luggages - this.selectedFlight.luggages_limit) * 100
-    else this.totalPrice = this.selectedFlight.price
+  onLuggagesChanged() {
+    if(+this.luggages < this.selectedFlight.luggages_limit){
+      let actualCurrency = this.currencies.find(curr => curr.currency == this.selectedCurrency);
+      console.log("Actual :", actualCurrency);
+    }
+
+    if (+this.luggages > this.selectedFlight.luggages_limit) {
+      const extraLuggage = +this.luggages - this.selectedFlight.luggages_limit;
+      const additionalCost = extraLuggage * 100;
+      const actualCurrency = this.currencies.find(curr => curr.currency == this.selectedCurrency);
+      console.log("Actual :", actualCurrency);
+
+      if(actualCurrency){
+        const selectedPrice = this.selectedFlight.price * actualCurrency.rate;
+        console.log(selectedPrice);
+
+        const newPrice = selectedPrice + additionalCost;
+        this.totalPrice = parseFloat(newPrice.toFixed(2));
+      }
+    } else {
+      this.totalPrice = parseFloat(this.selectedFlight.price.toFixed(2));
+    }
   }
 
-  onCurrencyChanged(curr: string){
-         console.log("Tola Price : ", this.totalPrice);
-         console.log("Tola curr : ", curr);
+
+  onCurrencyChanged(){
+    const selectedCurrency = this.selectedCurrency;
+    const selectedCurrencyObject = this.currencies.find(curr => curr.currency === selectedCurrency)!;
+
+    if(selectedCurrencyObject || +this.luggages > 0){
+      const newTotalPrice = this.selectedFlight.price * selectedCurrencyObject.rate;
+      this.totalPrice = parseFloat(newTotalPrice.toFixed(2));
+    }
   }
 
   getDateMin(){
