@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Flight } from 'src/app/modules/flight';
 
 @Component({
   selector: 'app-booking',
@@ -7,7 +6,6 @@ import { Flight } from 'src/app/modules/flight';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-  flight!: Flight
 
   constructor() { }
 

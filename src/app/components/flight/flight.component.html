@@ -10,19 +10,22 @@
             <div class="row">
               <div class="flight-container" style="list-style: none;">
                 <li *ngFor="let flight of flightLists">
-                  <a style="text-decoration: none; color: black; font-size: 30px;" (click)="selectFlight(flight)">{{ flight.airport_departiture }} - {{ flight.airport_destination }}</a>
+                  <a style="text-decoration: none; color: black; font-size: 30px;" (click)="selectFlight(flight)">{{ flight.airport_departiture.code }} - {{ flight.airport_destination.code }}</a>
                 </li>
               </div>
             </div>
             <div class="row" *ngIf="selectedFlight">
-              <p class="text-xl">Vous allez de <strong>{{selectedFlight.airport_departiture}}</strong> à <strong>{{ selectedFlight.airport_destination}}</strong></p>
+              <p class="text-xl">Vous allez de <strong>{{selectedFlight.airport_departiture.code}}</strong> à <strong>{{ selectedFlight.airport_destination.code}}</strong></p>
               <!-- <div class="row">
                 <p class="col-3">Prix du vol {{selectedFlight.price}}</p>
                 <select name="currency" id="currency" class="col-6">
                   <option (value)="selectedFlight.price" selected>EUR</option>
                 </select>
               </div> -->
-              <h1 *ngIf="totalPrice">{{totalPrice}} EURO</h1>
+              <h1 *ngIf="totalPrice" style="color: green;">{{totalPrice}}</h1>
+              <select  name="currency" id="currency" (ngModelChange)="onCurrencyChanged(selectedCurrency)" [(ngModel)]="selectedCurrency" style="padding: 2">
+                <option *ngFor="let curr of currencies" [value]="curr.currency">{{curr.currency}}</option>
+              </select>
               <div class="row col-md-6">
                 <div class="form-group">
                   <label for="dateDeparture">Renseigner votre date de départ:</label>
@@ -39,10 +42,14 @@
                   <label for="luggage">Nbre de baggages :</label>
                   <input required type="number" id="luggage" class="form-control" (ngModelChange)="onLuggagesChanged()" name="luggage" min="0" [(ngModel)]="luggages">
                 </div>
+                <div class="form-group">
+                  <label for="luggage">Nbre de places :</label>
+                  <input required type="number" id="seats" class="form-control" name="seats" min="1" max= "10" [(ngModel)]="numberPlaces">
+                </div>
               </div>
             </div>
             <br/>
-            <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id, dateFlight)">Réserver</button>
+            <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id, dateFlight, numberPlaces, selectedCurrency, luggages)">Réserver</button>
             </div>
       </div>
   </div>

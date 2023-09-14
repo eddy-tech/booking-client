@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Flight } from '../modules/flight';
 import { Booking } from '../modules/booking';
+import { Airport } from '../modules/airport';
+import { Currency } from '../modules/currency';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +15,15 @@ export class FlightService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getFlight(): Observable<Array<Flight>> {
-    return this.httpClient.get<Array<Flight>>(`${this.url}/flight`);
-  }
-
-  saveBooking(flight_id: string, date_departiture: number): Observable<Booking> {
-    return this.httpClient.post<Booking>(`${this.url}/booking`, {flight_id, date_departiture});
+  getFlight(): Observable<Array<Flight<Airport>>> {
+    return this.httpClient.get<Array<Flight<Airport>>>(`${this.url}/flights`);
   }
 
   getNumberPlace(flight_id: string): Observable<any>{
-    return this.httpClient.get(`${this.url}/flight/${flight_id}/getRestPlace`);
+    return this.httpClient.get(`${this.url}/flights/${flight_id}/getRestPlace`);
+  }
+
+  getCurrencies(): Observable<Array<Currency>>{
+    return this.httpClient.get<Array<Currency>>(`${this.url}/currencies`);
   }
 }
