@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Booking } from '../modules/booking';
 import { Airport } from '../modules/airport';
 import {BookingResponse} from '../modules/BookingResponse';
+import {OrderBooking} from '../modules/order';
 
 @Injectable({
   providedIn: 'root'
@@ -30,4 +31,13 @@ export class BookingService {
   confirmBooking(orderId: string): Observable<Booking<Airport>> {
     return this.httpClient.get<Booking<Airport>>(`${this.url}/bookings/${orderId}/confirm`)
   }
+
+  getListBooking(orderId: string): Observable<OrderBooking> {
+    return this.httpClient.get<OrderBooking>(`${this.url}/bookings/${orderId}`)
+  }
+
+  resetBooking(orderId: string): Observable<OrderBooking> {
+    return this.httpClient.delete<OrderBooking>(`${this.url}/bookings/${orderId}/cancel`)
+  }
+
 }

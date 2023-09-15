@@ -27,7 +27,7 @@
                   <h1 *ngIf="totalPrice" style="color: green;">{{totalPrice}}</h1>
                 </div>
                 <div class="col-md-6">
-                  <select name="currency" id="currency" (click)="onCurrencyChanged()" [(ngModel)]="selectedCurrency" style="padding: 2px; width: 100px; height: 50px; margin-left: -406px;">
+                  <select name="currency" id="currency" (click)="onPriceChanged()" [(ngModel)]="selectedCurrency" style="padding: 2px; width: 100px; height: 50px; margin-left: -406px;">
                     <option *ngFor="let curr of currencies" [value]="curr.currency">{{curr.currency}}</option>
                   </select>
                 </div>
@@ -47,11 +47,11 @@
                 </div>
                 <div class="form-group">
                   <label for="luggage">Nbre de baggages :</label>
-                  <input required type="number" id="luggage" class="form-control" (input)="onLuggagesChanged()" name="luggage" min="0" [(ngModel)]="luggages">
+                  <input required type="number" id="luggage" class="form-control" (input)="onPriceChanged()" name="luggage" min="0" [(ngModel)]="luggages">
                 </div>
                 <div class="form-group">
-                  <label for="luggage">Nbre de places :</label>
-                  <input required type="text" id="seats" class="form-control" name="seats" min="1" max= "10" [(ngModel)]="numberPlaces">
+                  <label for="luggage">Nbre de Billet :</label>
+                  <input required type="number" id="seats" class="form-control" name="seats" min="1" max= "10" [(ngModel)]="numberPlaces">
                 </div>
               </div>
             </div>
