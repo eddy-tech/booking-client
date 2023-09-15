@@ -24,6 +24,12 @@
             </div>
             <div class="row">
               <div class="form-group col-md-6">
+                <label for="currency">Monnaie :</label>
+                <select id="currency" class="form-control" [(ngModel)]="selectedCurrency" (change)="updatePrice()">
+                  <option *ngFor="let currency of currencies" [value]="currency.currency">{{ currency.currency }}</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
                 <label for="prix">Prix du vol :</label>
                 <input type="text" class="form-control" name="price" id="price" [(ngModel)]="flight.price">
               </div>
@@ -35,6 +41,7 @@
           </div>
           <br/>
           <button type="submit" class="btn btn-primary">Réserver</button>
+          <p *ngIf="selectedFlight.places === 0">Désolé, il n'y a plus de places disponibles.</p>
       </form>
   </div>
   </div>

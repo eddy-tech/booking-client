@@ -20,4 +20,14 @@ export class FlightService {
   saveBooking(flight: Flight): Observable<Booking> {
     return this.httpClient.post<Booking>(`${this.url}/booking`, flight);
   }
+
+  getAvailableSeats(flightId: string): Observable<number> {
+    const url = `${this.url}/flight/${flightId}/getRestPlace`;
+    return this.httpClient.get<number>(url);
+  }
+
+  getCurrencies(): Observable<any[]> {
+    const currenciesUrl = `${this.url}/currencies`;
+    return this.httpClient.get<any[]>(currenciesUrl);
+  }
 }

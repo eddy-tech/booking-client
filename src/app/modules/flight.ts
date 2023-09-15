@@ -3,4 +3,6 @@ export interface Flight {
  airport_departiture: string
  airport_destination: string
  price: number
+ selectedCurrency: string
+ places: number
 }
