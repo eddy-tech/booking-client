@@ -14,9 +14,10 @@ export class FlightComponent implements OnInit {
   flightLists: Array<Flight> = [];
   isChecked: boolean = false;
   flight!: Flight;
+  selectedFlight!: Flight;
+  currencies: any[] = [];
   selectedCurrency: string = 'EUR'; // Monnaie par défaut
   price: number = 0; // Prix initial
-  currencies: any[] = [];
 
   constructor(private flightService: FlightService) { }
 
@@ -28,18 +29,23 @@ export class FlightComponent implements OnInit {
       error: (err: Error) => {
         console.log(err);
       }
-    });
-      // Chargez la liste des devises au chargement de la page
+    })
+      // Charge la liste des devises au chargement de la page
       this.flightService.getCurrencies().subscribe((data: any[]) => {
         this.currencies = data;
-      })
-    }
-  }
+      });
+    };
 
-  updatePrice(){
-    // this.flight = this.flightLists.find(flight =>
-    //   flight.airport_departiture === this.selectedDeparture && flight.airport_destination === this.selectedArrival)
-  }
+
+    updatePrice(): void {
+      //le taux de change de la devise sélectionnée
+      const selectedCurrencyObject = this.currencies.find(currency => currency.currency === this.selectedCurrency);
+
+      if (selectedCurrencyObject) {
+        // Met à jour le prix en fonction du taux de change
+        this.price = this.price * selectedCurrencyObject.rate;
+      }
+    }
 
   onBooking(flight: Flight){
     console.log(flight);
@@ -48,7 +54,7 @@ export class FlightComponent implements OnInit {
 
   onFlightSelect(flight: Flight): void {
     this.selectedFlight = flight;
-    // Récupérez le nombre de places disponibles pour le vol sélectionné
+    // Récupère le nombre de places disponibles pour le vol sélectionné
     this.flightService.getAvailableSeats (flight.id).subscribe((places: number) => {
       this.selectedFlight.places = places;
     });

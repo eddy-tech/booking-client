@@ -6,20 +6,12 @@
   <div class="row">
     <div class="container mt-5">
       <h1 class="mb-4">Réservez votre vol - Air Camair</h1>
-      <form>
-          <div class="form-group" (ngSubmit)="onBooking(flight)">
+          <div class="form-group">
             <div class="row">
-              <div class="form-group col-md-6">
-                <label for="vols">Aéroport de départ :</label>
-                <select class="form-control" id="vols-depart" name="selectedDeparture" [(ngModel)]="selectedDeparture" (change)="updatePrice()">
-                    <option *ngFor="let flight of flightLists"  [value]="flight.airport_departiture">{{flight.airport_departiture}}</option>
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="vols">Aéroport d'arrivé :</label>
-                <select class="form-control" id="vols-arrive" name="selectedArrival" [(ngModel)]="selectedArrival" (change)="updatePrice()">
-                    <option *ngFor="let flight of flightLists" [value]="flight.airport_destination">{{flight.airport_destination}}</option>
-                </select>
+              <div class="flight-container" style="list-style: none;">
+                <li *ngFor="let flight of flightLists">
+                  <a style="text-decoration: none; color: black; font-size: 30px;" (click)="selectedFlight">{{ flight.airport_departiture }} - {{ flight.airport_destination }}</a>
+                </li>
               </div>
             </div>
             <div class="row">
@@ -42,10 +34,9 @@
           <br/>
           <button type="submit" class="btn btn-primary">Réserver</button>
           <p *ngIf="selectedFlight.places === 0">Désolé, il n'y a plus de places disponibles.</p>
-      </form>
-  </div>
-  </div>
 
+  </div>
+  </div>
 </div>
 
 
