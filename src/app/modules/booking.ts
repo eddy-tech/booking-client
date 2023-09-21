@@ -14,5 +14,6 @@ export interface Booking<T extends string | Airport> {
   cost_per_more_luggages?: number
   luggages: number
   passengers?: Passenger[]
+  order_id?: string
   // created_at: DateTime
 }

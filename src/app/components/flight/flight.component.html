@@ -23,7 +23,7 @@
                 </select>
               </div> -->
               <h1 *ngIf="totalPrice" style="color: green;">{{totalPrice}}</h1>
-              <select  name="currency" id="currency" (ngModelChange)="onCurrencyChanged(selectedCurrency)" [(ngModel)]="selectedCurrency" style="padding: 2">
+              <select  name="currency" id="currency" [(ngModel)]="selectedCurrency" style="padding: 2">
                 <option *ngFor="let curr of currencies" [value]="curr.currency">{{curr.currency}}</option>
               </select>
               <div class="row col-md-6">

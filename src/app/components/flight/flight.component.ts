@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Airport } from 'src/app/modules/airport';
 import { Booking } from 'src/app/modules/booking';
 import { Currency } from 'src/app/modules/currency';
@@ -19,6 +20,7 @@ export class FlightComponent implements OnInit {
   luggages: number = 0;
   numberPlaces: number = 0;
   totalPlaces: number = 0;
+  @Input()
   saveBooking!: Booking<Airport>;
   minDate!: string
   selectedBooking!: Booking<Airport>
@@ -28,7 +30,7 @@ export class FlightComponent implements OnInit {
   currencies: Array<Currency> = []
   selectedCurrency!: string
 
-  constructor(private flightService: FlightService, private bookingService: BookingService) {}
+  constructor(private flightService: FlightService, private bookingService: BookingService, private router: Router) {}
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
@@ -69,13 +71,13 @@ export class FlightComponent implements OnInit {
     if(this.luggages < 0) return;
     const [year, month, day] = date_departiture?.split('-')
     const timestamp = new Date(+year, +month, +day).getTime()
-    // this.onNumberPlace(id_flight);
 
     this.bookingService.saveBooking(id_flight, timestamp, quantity, currency, luggages).subscribe({
       next: (data: Booking<Airport>) => {
         this.saveBooking = data;
         alert(`Votre réservation a été pris en compte avec succès`);
         console.log(this.saveBooking);
+        this.router.navigate(['/booking', this.saveBooking.order_id]);
       },
       error: (err: any) => console.log(err)
     })
@@ -85,17 +87,13 @@ export class FlightComponent implements OnInit {
     this.isShow = !this.isShow;
     if(this.isShow){
         this.selectedFlight = flight
+        this.totalPrice = flight.price
     }
   }
 
   onLuggagesChanged(){
     if(+this.luggages > this.selectedFlight.luggages_limit) this.totalPrice = this.selectedFlight.price + (+this.luggages - this.selectedFlight.luggages_limit) * 100
     else this.totalPrice = this.selectedFlight.price
-  }
-
-  onCurrencyChanged(curr: string){
-         console.log("Tola Price : ", this.totalPrice);
-         console.log("Tola curr : ", curr);
   }
 
   getDateMin(){

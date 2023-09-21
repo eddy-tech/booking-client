@@ -17,4 +17,8 @@ export class BookingService {
   saveBooking(flight_id: string, date_departiture: number, quantity: number, currency: string, luggages: number): Observable<Booking<Airport>> {
     return this.httpClient.post<Booking<Airport>>(`${this.url}/bookings`, {flight_id, date_departiture, quantity, currency, luggages});
   }
+
+  confirmBooking(orderId: string): Observable<any> {
+    return this.httpClient.get(`${this.url}/bookings/${orderId}/confirm`);
+  }
 }
