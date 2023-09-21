@@ -8,13 +8,15 @@ import { FlightComponent } from './components/flight/flight.component';
 import { BookingComponent } from './components/booking/booking.component';
 import { FormsModule } from '@angular/forms';
 import { HealthStatusComponent } from './health-status/health-status.component';
+import { BookingStatsComponent } from './booking-stats/booking-stats.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlightComponent,
     BookingComponent,
-    HealthStatusComponent
+    HealthStatusComponent,
+    BookingStatsComponent
   ],
   imports: [
     BrowserModule,
