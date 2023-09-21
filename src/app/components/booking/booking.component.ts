@@ -1,6 +1,10 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BookingService } from 'src/app/services/booking.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Airport} from 'src/app/modules/airport';
+import {Booking} from 'src/app/modules/booking';
+import {OrderBooking} from 'src/app/modules/order';
+import {BookingService} from 'src/app/services/booking.service';
 
 @Component({
   selector: 'app-booking',
@@ -8,20 +12,48 @@ import { BookingService } from 'src/app/services/booking.service';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-  confirmData: any;
+  orderBooking!: OrderBooking
+  resetBooking!: OrderBooking
+  orderId: string = this.activeRoute.snapshot.paramMap.get('orderId')!;
+  confirmReservation!: Booking<Airport>
 
-  constructor(private bookingService: BookingService, private route: ActivatedRoute) { }
-
+  constructor(private bookingService: BookingService, private activeRoute: ActivatedRoute, private route: Router) { }
   ngOnInit(): void {
-    const orderId: string = this.route.snapshot.paramMap.get('orderId')!;
-    console.log("ID: ", orderId);
+    this.bookingService.getListBooking(this.orderId).subscribe({
+      next: (data: OrderBooking) => {
+        this.orderBooking = data;
+        console.log(this.orderBooking);
 
-    this.bookingService.confirmBooking(orderId).subscribe({
-      next: (data: any) => {
-        this.confirmData = data;
-        console.log("Confirm: ", this.confirmData);
+      },
+      error: (err: HttpErrorResponse) =>{
+        alert(err.error.message);
       }
+    })
+  }
 
+  onDeleteBooking(){
+    this.bookingService.resetBooking(this.orderId).subscribe({
+      next: (data: OrderBooking) => {
+        this.resetBooking = data;
+        alert(`Votre commande a été annuler avec succès`);
+        this.route.navigateByUrl('/');
+      },
+      error: (err: HttpErrorResponse) =>{
+        alert(err.error.message);
+      }
+    })
+  }
+
+  onConfirmBooking(){
+    this.bookingService.confirmBooking(this.orderId).subscribe({
+      next: (data: Booking<Airport>) => {
+        this.confirmReservation = data;
+        alert(`Votre réservation numéro ${this.confirmReservation.id} a été enregistré avec succès chez Air Camair`);
+        this.route.navigateByUrl('/');
+      },
+      error: (err: HttpErrorResponse) =>{
+        alert(err.error.message);
+      }
     })
   }
 

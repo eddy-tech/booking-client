@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Flight } from '../modules/flight';
-import { Booking } from '../modules/booking';
 import { Airport } from '../modules/airport';
 import { Currency } from '../modules/currency';
+import { API_KEY } from '../enums/flight';
 
 @Injectable({
   providedIn: 'root'

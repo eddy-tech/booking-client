@@ -7,6 +7,6 @@ export interface Flight<T extends string | Airport> {
   price: number
   seats: number
   luggages_limit: number
-  stopover: number[]
+  stopover: string[]
   airline: string
 }

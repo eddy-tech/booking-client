@@ -6,6 +6,7 @@ export interface Booking<T extends string | Airport> {
   id: string
   flight?: Flight<T>
   flight_id: string
+  email_guest: string
   date_departiture: number
   quantity: number
   discount?: number
