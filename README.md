@@ -1,6 +1,162 @@
 # BookingClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.10.
+Le **front-end** pour la vente de billets est une interface utilisateur intuitive, offrant une expérience utilisateur fluide et conviviale pour la réservation de billets, avec des fonctionnalités de recherche simplifiées et une conception attrayante pour les utilisateurs. Il permet aux clients de naviguer facilement, de visualiser les options de billets, et de finaliser leurs achats de manière transparente.
+
+### Team : 👨‍👨‍👦‍👦
+
+- Jordan KAGMENI (Torador): Lead Dev
+- Carlos KODJO: QA & Front Dev
+- Andy KOUEKAM: Front Dev
+- Eddy KOKO: Front Dev
+
+### Stack 📝
+
+- [AngularJS](https://angularjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [jQuery](https://jquery.com/)
+- [Bootstrap](https://getbootstrap.com/)
+
+## Objects 📦
+
+1. ### Airline
+    <details>
+    <summary>Airline details</summary>
+
+    ```javascript
+    export interface Airline {
+    id: string
+    code: string
+    name: string
+    }
+    ```
+    </details>
+
+2. ### Airport
+    <details>
+    <summary>Airport details</summary>
+
+    ```javascript
+    export interface Airport {
+    id: string
+    code: string
+    name: string
+    }
+    ```
+    </details>
+
+3. ### Booking
+    <details>
+    <summary>Booking details</summary>
+
+    ```javascript
+    export interface Booking<T extends string | Airport> {
+    id: string
+    flight?: Flight<T>
+    flight_id: string
+    email_guest: string
+    date_departiture: number
+    quantity: number
+    discount?: number
+    discount_cond?: number
+    currency: string
+    cost_per_more_luggages?: number
+    luggages: number
+    passengers?: Passenger[]
+    order_id?: string
+    // created_at: DateTime
+    }
+    ```
+    </details>
+
+4. ### Currency
+    <details>
+    <summary>Currency details</summary>
+
+    ```javascript
+    export interface Currency {
+    currency: string
+    rate: number
+    }
+    ```
+    </details>
+
+5. ### Flight
+    <details>
+    <summary>Flight details</summary>
+
+    ```javascript
+    export interface Flight<T extends string | Airport> {
+    id: string
+    airport_departiture: T
+    airport_destination: T
+    price: number
+    seats: number
+    luggages_limit: number
+    stopover: string[]
+    airline: string
+    }
+    ```
+    </details>
+
+6. ### OrderBooking
+    <details>
+    <summary>OrderBooking details</summary>
+
+    ```javascript
+    export interface OrderBooking {
+    flight_id: string,
+    date_departiture: string,
+    quantity: number,
+    currency: string,
+    luggages: number,
+    currency_rate: number,
+    discount: number,
+    discount_cond: number,
+    cost_per_more_luggages: number,
+    flight: Flight<Airport>,
+    total_luggages_price: string,
+    total_price: string
+    }
+    ```
+    </details>
+
+7. ### Passenger
+    <details>
+    <summary>Passenger details</summary>
+
+    ```javascript
+    export interface Passenger {
+    id: string
+    fistname: string
+    lastname: string
+    birthdate: number
+    }
+    ```
+    </details>
+
+## Intallation ⚙️
+
+1.  Node JS
+
+Après avoir cloné le projet, rassurer vous d'avoir nodejs installé sur votre machine en tappant cette commande:
+
+```bash
+  node --version
+  #v16.14.2
+```
+
+Si la version de node ne s'affiche pas, je vous invite à la télécharger [ici](https://nodejs.org/en/).
+
+2.  Dépendances
+
+Pour installer les dépendances du projet, tappez cette commande dans votre terminal à la racine de chaque ressource:
+
+```bash
+  yarn
+  #or
+  npm install
+```
+
 
 ## Development server
 
