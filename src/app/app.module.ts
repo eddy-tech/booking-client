@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { FlightComponent } from './components/flight/flight.component';
 import { BookingComponent } from './components/booking/booking.component';
 import { FormsModule } from '@angular/forms';
+import { HealthStatusComponent } from './health-status/health-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlightComponent,
-    BookingComponent
+    BookingComponent,
+    HealthStatusComponent
   ],
   imports: [
     BrowserModule,

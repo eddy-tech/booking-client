@@ -1,0 +1,27 @@
+<div>
+  <h2>État de santé des microservices</h2>
+  <div *ngIf="frontServiceHealthy; else notHealthy">
+    <div style="width: 20px; height: 20px; background-color: green; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Front : Sain</span>
+  </div>
+  <ng-template #notHealthy>
+    <div style="width: 20px; height: 20px; background-color: red; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Front : En panne</span>
+  </ng-template>
+  <div *ngIf="flightServiceHealthy; else notHealthy">
+    <div style="width: 20px; height: 20px; background-color: green; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Flight : Sain</span>
+  </div>
+  <ng-template #notHealthy>
+    <div style="width: 20px; height: 20px; background-color: red; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Flight : En panne</span>
+  </ng-template>
+  <div *ngIf="bookingServiceHealthy; else notHealthy">
+    <div style="width: 20px; height: 20px; background-color: green; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Booking : Sain</span>
+  </div>
+  <ng-template #notHealthy>
+    <div style="width: 20px; height: 20px; background-color: red; border-radius: 50%; display: inline-block;"></div>
+    <span>Microservice Booking : En panne</span>
+  </ng-template>
+</div>

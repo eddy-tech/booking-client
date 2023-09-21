@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Flight } from 'src/app/modules/flight';
 import { FlightService } from 'src/app/services/flight.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-flight',
@@ -16,7 +18,7 @@ export class FlightComponent implements OnInit {
   flight!: Flight;
   selectedFlight!: Flight;
 
-  constructor(private flightService: FlightService) { }
+  constructor(private flightService: FlightService, private router: Router) { }
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
@@ -45,6 +47,11 @@ export class FlightComponent implements OnInit {
     this.flightService.getAvailableSeats (flight.id).subscribe((places: number) => {
       this.selectedFlight.places = places;
     });
+  }
+
+  goToHealthPage(): void {
+    // Utilise le service Router pour naviguer vers la page "Health"
+    this.router.navigate(['/health']);
   }
 
 }
