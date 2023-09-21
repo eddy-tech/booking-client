@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { Flight } from '../modules/flight';
 import { Airport } from '../modules/airport';
 import { Currency } from '../modules/currency';
-import { API_KEY } from '../enums/flight';
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +25,10 @@ export class FlightService {
   getCurrencies(): Observable<Array<Currency>>{
     return this.httpClient.get<Array<Currency>>(`${this.url}/currencies`);
   }
+
+  getAvailableSeats(flightId: string): Observable<number> {
+    const url = `${this.url}/flight/${flightId}/getRestPlace`;
+    return this.httpClient.get<number>(url);
+  }
+
 }
