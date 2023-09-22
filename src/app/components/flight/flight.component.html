@@ -1,27 +1,22 @@
-<nav>
-  <h1 style="text-align: center;"> BIENVENUE A LA RESERVATION DE VOTRE VOL</h1>
-</nav>
+<app-nav-bar></app-nav-bar>
 
 <div class="container">
   <div class="row">
     <div class="container mt-5">
-      <h1 class="mb-4">Réservez votre vol - Air Camair</h1>
-          <div class="form-group">
+      <h2 class="mb-4">Offres et destinations</h2>
+      <div class="spinner-border" role="status" *ngIf="!isFlightTrue">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+          <div class="form-group" *ngIf="isFlightTrue">
             <div class="row">
-              <div class="flight-container col-md-5" (mousedown)="selectFlight(flight)" style="list-style: none;" *ngFor="let flight of flightLists" [ngClass]="{'selected-flight': flight === selectedFlight}">
+              <div class="flight-container col-md-5 m-2" style="list-style: none;" *ngFor="let flight of flightLists">
                 <li>
-                  <a style="text-decoration: none; font-size: 30px;">{{ flight.airport_departiture.code }} - {{ flight.airport_destination.code }}</a>
+                  <button type="button" [class]="flight === selectedFlight ? 'badge bg-primary' : 'badge bg-secondary'" (mousedown)="selectFlight(flight)" (keypress)="selectFlight(flight)" style="text-decoration: none; font-size: 30px;">{{ flight.airport_departiture.code }} - {{ flight.airport_destination.code }}</button>
                 </li>
               </div>
             </div>
             <div class="row" *ngIf="selectedFlight">
               <p class="text-xl">Vous allez de <strong>{{selectedFlight.airport_departiture.code}}</strong> à <strong>{{ selectedFlight.airport_destination.code}}</strong></p>
-              <!-- <div class="row">
-                <p class="col-3">Prix du vol {{selectedFlight.price}}</p>
-                <select name="currency" id="currency" class="col-6">
-                  <option (value)="selectedFlight.price" selected>EUR</option>
-                </select>
-              </div> -->
               <div class="row">
                 <div class="col-md-6">
                   <h1 *ngIf="totalPrice" style="color: green;">{{totalPrice}}</h1>
@@ -56,7 +51,6 @@
                     required
                   >
                 </div>
-
                 <div class="form-group">
                   <label for="luggage">Nbre de baggages :</label>
                   <input required type="number" id="luggage" class="form-control" (input)="onPriceChanged()" name="luggage" min="0" [(ngModel)]="luggages">
@@ -65,11 +59,60 @@
                   <label for="luggage">Nbre de Billet :</label>
                   <input required type="number" id="seats" class="form-control" name="seats" min="1" max= "10" [(ngModel)]="numberPlaces">
                 </div>
+                <div class="from-group" *ngIf="selectedFlight.stopover.length">
+                  <label for="stop-ovre">Escale :</label>
+                  <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          Liste des escales
+                        </button>
+                      </h2>
+                      <div class="accordion-collapse collapse" id="collapseThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <ul style="list-style: none;" *ngFor="let flight of flightLists">
+                            <li *ngFor="let escale of flight.stopover">{{escale}}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <br/>
-            <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id, dateFlight, emailGuest, numberPlaces, selectedCurrency
-            , luggages)">Réserver</button>
+              <div class="col-md-6" *ngIf="selectedFlight" style="display: flex; justify-content: space-between;">
+                <button type="button" class="btn btn-primary" (click)="onBooking(selectedFlight.id, dateFlight, emailGuest, numberPlaces, selectedCurrency
+                , luggages)">Réserver</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Consulter Réservation
+                </button>
+                <button type="button" class="btn btn-success" routerLink="/health">
+                  Santé Application
+                </button>
+              </div>
+
+            <!--Modal-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Email Réservation</h1>
+                    <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="email_guest">Email : </label>
+                      <input type="email" name="email_guest" id="email_guest" class="form-control" [(ngModel)]="emailGuest" required>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="closeModal" (click)="onShowBooking(emailGuest)">Consulter</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             </div>
       </div>
   </div>

@@ -1,13 +1,15 @@
 import {HttpErrorResponse} from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {Router} from '@angular/router';
 import {BookingResponse} from 'src/app/modules/BookingResponse';
 import { Airport } from 'src/app/modules/airport';
 import { Booking } from 'src/app/modules/booking';
 import { Currency } from 'src/app/modules/currency';
 import { Flight } from 'src/app/modules/flight';
+import { OrderBooking } from 'src/app/modules/order';
 import { BookingService } from 'src/app/services/booking.service';
 import { FlightService } from 'src/app/services/flight.service';
+import {ThemePalette} from '@angular/material/core';
 
 @Component({
   selector: 'app-flight',
@@ -15,6 +17,7 @@ import { FlightService } from 'src/app/services/flight.service';
   styleUrls: ['./flight.component.css']
 })
 export class FlightComponent implements OnInit {
+  @ViewChild('closebutton') closebutton: any;
   selectedDate!: string;
   flightLists: Array<Flight<Airport>> = [];
   selectedFlight!: Flight<Airport>;
@@ -30,13 +33,14 @@ export class FlightComponent implements OnInit {
   currencies: Array<Currency> = []
   selectedCurrency!: string
   emailGuest!: string
-
+  isFlightTrue: boolean = false;
   constructor(private flightService: FlightService, private bookingService: BookingService, private route: Router) {}
 
   ngOnInit(): void {
      this.flightService.getFlight().subscribe({
       next: (data: Array<Flight<Airport>>) => {
         this.flightLists = data;
+        this.isFlightTrue = true;
       },
       error: (err: Error) => {
         console.log(err);
@@ -85,6 +89,19 @@ export class FlightComponent implements OnInit {
       }
     })
   }
+
+  onShowBooking(email_guest: string){
+    this.bookingService.getBookingByEmail(email_guest).subscribe({
+      next: (data: any) => {
+        if(Array.isArray(data)){
+          this.bookingService.setBookingData(data);
+          this.closebutton.nativeElement.click();
+          this.route.navigate(['/booking-mail'])
+        }
+      }
+    })
+  }
+
 
   selectFlight(flight: Flight<Airport>){
         this.selectedFlight = flight;

@@ -1,1 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.footer-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Styles pour le label du checkbox */
+.checkbox-label {
+  position: relative;
+  padding-left: 35px; /* Espace pour la boîte à cocher */
+  cursor: pointer;
+  font-size: 18px; /* Taille de la police du label */
+}
+
+/* Styles pour la boîte à cocher réelle (input[type="checkbox"]) */
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px; /* Largeur de la boîte à cocher */
+  height: 30px; /* Hauteur de la boîte à cocher */
+  opacity: 0; /* Masquer la boîte à cocher réelle */
+  cursor: pointer;
+}
+
+/* Styles pour la boîte à cocher personnalisée (coche) */
+.checkbox-label .custom-checkbox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px; /* Largeur de la boîte à cocher */
+  height: 30px; /* Hauteur de la boîte à cocher */
+  background-color: #fff; /* Couleur de fond de la boîte à cocher */
+  border: 2px solid #333; /* Bordure de la boîte à cocher */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+/* Styles pour la coche (icône) */
+.checkbox-label .custom-checkbox::before {
+  content: ""; /* Contenu vide pour l'icône */
+  position: absolute;
+  left: 9px; /* Position horizontale de l'icône */
+  top: 5px; /* Position verticale de l'icône */
+  width: 12px; /* Largeur de l'icône */
+  height: 12px; /* Hauteur de l'icône */
+  border: 2px solid #333; /* Bordure de l'icône */
+  border-top: none; /* Supprimer le bord supérieur */
+  border-left: none; /* Supprimer le bord gauche */
+  transform: rotate(45deg); /* Rotation de 45 degrés pour créer une coche */
+  opacity: 0; /* Masquer l'icône par défaut */
+}
+
+/* Styles pour la boîte à cocher cochée */
+.checkbox-label input[type="checkbox"]:checked + .custom-checkbox::before {
+  opacity: 1; /* Afficher l'icône lorsque la boîte à cocher est cochée */
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-left: 10px; /* Espace entre le texte et la boîte à cocher */
+  cursor: pointer;
+}
+
+/* Styles pour la boîte à cocher personnalisée (coche) */
+.custom-checkbox-label .custom-checkbox {
+  width: 30px; /* Largeur de la boîte à cocher */
+  height: 30px; /* Hauteur de la boîte à cocher */
+}
