@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Booking } from '../modules/booking';
 import { Airport } from '../modules/airport';
@@ -11,7 +11,8 @@ import {OrderBooking} from '../modules/order';
   providedIn: 'root'
 })
 export class BookingService {
-  private url: string = environment.apiUrl
+  private url: string = environment.apiUrl;
+  private bookingData = new BehaviorSubject<any>(null);
 
   constructor(private httpClient: HttpClient) { }
 
@@ -29,15 +30,28 @@ export class BookingService {
   }
 
   confirmBooking(orderId: string): Observable<Booking<Airport>> {
-    return this.httpClient.get<Booking<Airport>>(`${this.url}/bookings/${orderId}/confirm`)
+    return this.httpClient.get<Booking<Airport>>(`${this.url}/bookings/${orderId}/confirm`);
   }
 
   getListBooking(orderId: string): Observable<OrderBooking> {
-    return this.httpClient.get<OrderBooking>(`${this.url}/bookings/${orderId}`)
+    return this.httpClient.get<OrderBooking>(`${this.url}/bookings/${orderId}`);
   }
 
   resetBooking(orderId: string): Observable<OrderBooking> {
-    return this.httpClient.delete<OrderBooking>(`${this.url}/bookings/${orderId}/cancel`)
+    return this.httpClient.delete<OrderBooking>(`${this.url}/bookings/${orderId}/cancel`);
+  }
+
+  getBookingByEmail(email_guest: string): Observable<Booking<Airport>> {
+    const params = new HttpParams().set('email', email_guest);
+    return this.httpClient.get<Booking<Airport>>(`${this.url}/bookings`, { params });
+  }
+
+  setBookingData(data: Array<OrderBooking>){
+    this.bookingData.next(data);
+  }
+
+  getBookingData(){
+    return this.bookingData.asObservable();
   }
 
 }

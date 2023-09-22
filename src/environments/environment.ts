@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:3333/api/v1'
+  apiUrl: 'http://127.0.0.1:3333/api/v1',
+  apiFrontUrl: 'http://127.0.0.1:3333',
+  flightMicroserviceUrl: 'http://127.0.0.1:3000',
+  bookingMicroserviceUrl: 'http://127.0.0.1:3030'
 };
 
 /*

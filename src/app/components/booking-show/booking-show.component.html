@@ -1,0 +1,38 @@
+<div class="card" *ngIf="orderBooking">
+  <div class="card-body">
+    <div class="row">
+      <h4 class="card-title">Récapitulatif de la Réservation :</h4>
+      <label class="custom-checkbox-label">
+        <input type="checkbox" class="custom-checkbox" id="myCheckbox" [(ngModel)]="selectBookingAirline" (ngModelChange)="onCheckModel()">
+        <span class="custom-checkbox-box"></span>
+      </label>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Numéro de Vol :</strong> {{ orderBooking.flight_id }}</li>
+      <li class="list-group-item"><strong>Airline :</strong> {{ orderBooking.flight.airline }}</li>
+      <li class="list-group-item"><strong>Aéroport de départ :</strong> {{ orderBooking.flight.airport_departiture.name }}</li>
+      <li class="list-group-item"><strong>Aéroport d'arrivée :</strong> {{ orderBooking.flight.airport_destination.name }}</li>
+      <li class="list-group-item"><strong>Date de Départ :</strong> {{ orderBooking.date_departiture   }}</li>
+      <li class="list-group-item"><strong>Nombre de Billets :</strong> {{ orderBooking.quantity }}</li>
+      <li class="list-group-item"><strong>Email acheteur :</strong> {{ orderBooking.email_guest }}</li>
+      <li class="list-group-item"><strong>Devise :</strong> {{ orderBooking.currency }}</li>
+      <li class="list-group-item"><strong>Nombre de Bagages :</strong> {{ orderBooking.luggages }}</li>
+      <ng-container *ngIf="orderBooking.luggages >= 10">
+        <li class="list-group-item"><strong>Réduction :</strong> {{ orderBooking.discount | percent }}</li>
+        <li class="list-group-item"><strong>Réduction Applicable :</strong> Quand au moins {{ orderBooking.discount_cond }} billets commandés</li>
+      </ng-container>
+      <ng-container *ngIf="orderBooking.flight.stopover.length > 0">
+        <li class="list-group-item" *ngFor="let escale of orderBooking.flight.stopover"><strong>Escale :</strong> {{ escale }}</li>
+      </ng-container>
+      <li class="list-group-item"><strong>Prix du vol :</strong> {{ orderBooking.flight.price }}</li>
+      <li class="list-group-item"><strong>Coût par Bagage Supplémentaire :</strong> {{ orderBooking.cost_per_more_luggages }}</li>
+      <li class="list-group-item"><strong>Coût des Bagages Supplémentaires :</strong> {{ orderBooking.total_luggages_price }}</li>
+      <li class="list-group-item"><strong>Prix total du vol :</strong> {{ orderBooking.total_price }}</li>
+    </ul>
+  </div>
+        <!-- Lien pour télécharger le récapitulatif -->
+  <div class="footer-action">
+    <a class="btn btn-danger" (click)="onDeleteBooking()">Annuler</a>
+    <a class="btn btn-success" (click)="onConfirmBooking()" >Confirmer Reservation</a>
+</div>
